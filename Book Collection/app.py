@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, send_from_directory
+import os
 
 
 # Configure Flask with absolute path
@@ -8,7 +9,7 @@ app.secret_key = 'change-this-secret-key'
 
 @app.route('/')
 def home():
-    return redirect(url_for('login'))
+    return render_template('login.html')
 
 
 @app.route('/sign')
@@ -24,11 +25,6 @@ def login():
         password = request.form.get('password', '').strip()
         languages = request.form.getlist('language')  # can be multiple
         age = request.form.get('age')
-
-        # Very basic acceptance; add real auth as needed
-        if not username or not password:
-            # Re-render the page; the HTML has no error slot, so we simply reload
-            return render_template('login.html')
 
         session['username'] = username
         session['languages'] = languages
